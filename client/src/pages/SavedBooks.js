@@ -12,11 +12,39 @@ const SavedBooks = () => {
   const userDataLength = Object.keys(userData).length;
 
 
-  // Do they want us to remove the entire useEffect function and replace wiht useQuery or plug that in somewhere within?
-  useEffect(() => {
-    // useQuery(() => {
-    const getUserData = async () => {
-      // const GET_ME = async (userData) => {
+
+  // useEffect(() => {
+  //   // useQuery(() => {
+  //   const getUserData = async () => {
+  //     // const GET_ME = async (userData) => {
+  //     try {
+  //       const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+  //       if (!token) {
+  //         return false;
+  //       }
+
+  //       const response = await getMe(token);
+
+  //       if (!response.ok) {
+  //         throw new Error('something went wrong!');
+  //       }
+
+  //       const user = await response.json();
+  //       setUserData(user);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   getUserData();
+  // }, [userDataLength]);
+
+  // NOT SURE IF THIS IS CORRECT, DOUBLE CHECK
+  // useEffect(() => {
+  useQuery(() => {
+    // const getUserData = async () => {
+    const GET_ME = async () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -37,8 +65,9 @@ const SavedBooks = () => {
       }
     };
 
-    getUserData();
+    GET_ME();
   }, [userDataLength]);
+
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
