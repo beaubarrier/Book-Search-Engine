@@ -8,28 +8,36 @@ const resolvers = {
                 const userData = await User.findOne({ _id: context.user._id })
                 return userData
             }
-            console.log('user auth failed')
+            console.log('Error: User authentication failed.')
         },
-        matchups: async (parent, { _id }) => {
-            const params = _id ? { _id } : {};
-            return Matchup.find(params);
-        },
+
     },
     Mutation: {
+
+        getSingleUser: async (parent, args, context) => {
+
+            const user = await User.findOne({ _id: context.user._id })
+            if (!user) {
+                console.log('Error: Unable to find user.')
+            }
+            const authToken = userSignIn(user)
+            return { user, authToken }
+        },
+
         createUser: async (parent, args) => {
             const user = await User.create(args)
 
             const authToken = userSignIn(user)
             return { user, authToken };
         },
-        logIn: async (parent, { email, password }) => {
+        login: async (parent, { email, password }) => {
             const user = await User.findOne({ email })
             if (!user) {
-                console.log("error: invalid email")
+                console.log("Error: Invalid user email.")
             }
             const checkPassword = await user.isCorrectPassword(password)
             if (!checkPassword) {
-                console.log("invalid password")
+                console.log("Error: Invalid password.")
             }
 
             const authToken = userSignIn(user)
@@ -45,7 +53,7 @@ const resolvers = {
                 )
                 return updatedUserInfo
             }
-            console.log("user logged in")
+            console.log("Logged in!")
         },
 
         deleteBook: async (parent, { bookId }, context) => {
@@ -58,7 +66,7 @@ const resolvers = {
                 )
                 return updatedUserInfo
             }
-            console.log("user logged in")
+            console.log("Logged in!")
         }
 
     },
