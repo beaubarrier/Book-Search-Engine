@@ -18,13 +18,11 @@ const typeDefs = gql`
     image: String
     link: String
     title: String!
-
   }
 
   type Auth {
     token: ID!
     user: User
-    
   }
 
   type Mutation {
